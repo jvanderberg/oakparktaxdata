@@ -1,4 +1,4 @@
-# Oak Park Tax Data
+# Oak Park Tax Datagi
 
 Oak Park, IL Tax Data an Analysis
 
@@ -14,6 +14,17 @@ The file "oak park tax history.csv" contains historical tax levy data for Oak pa
 -   _EAV_ Total equalized assessed value of the properties subject to the tax rate
 
 In all cases Levy = Rate \* EAV
+
+The file "oak park tax history summary.csv" contains the totals by year in a pivoted format.
+
+## Columns
+
+-   _Year_ The tax year
+-   _D200_ The Oak park portion of the OPRF levy for that year
+-   _D97_ The Oak Park Elementary/Middle school levy
+-   _Oak Park Township_ The township levy, including general assistance and mental health
+-   _Village of Oak Park_ The Village levy with the library levy added in
+-   _Grand Total_ The total levy for that year
 
 ## _Source_
 
