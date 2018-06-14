@@ -2,7 +2,7 @@
 
 Oak Park, IL Tax Data an Analysis
 
-The file "oak park tax history.csv" contains historical tax levy data for Oak park taxing agencies.
+The file "oak park tax history.csv" contains historicgit addal tax levy data for Oak park taxing agencies.
 
 ## Columns
 
@@ -23,6 +23,7 @@ The file "oak park tax history summary.csv" contains the totals by year in a piv
 -   _D200_ The Oak park portion of the OPRF levy for that year
 -   _D97_ The Oak Park Elementary/Middle school levy
 -   _Oak Park Township_ The township levy, including general assistance and mental health
+-   _Park District_ The Oak Park park district
 -   _Village of Oak Park_ The Village levy with the library levy added in
 -   _Grand Total_ The total levy for that year
 
@@ -35,4 +36,4 @@ https://www.cookcountyclerk.com/service/tax-agency-reports
 ## Notes
 
 -   For simplicity, the "Agency" column rolls up the Library into the Village of Oak Park, and the mental health and general assistance funds into the Township, the 'Detail' column breaks those out if you want to do summaries that perserve this detail.
--   The 'D200' Agency is the Oak Park only portion of OPRF's level. The 'D200 Total' agency is the full OPRF levy. If you are making summary rollups of this data, only include one or the other.
+-   The 'D200' Agency is the Oak Park only portion of OPRF's levy. The 'D200 Total' agency is the full OPRF levy. If you are making summary rollups of this data, only include one or the other.
