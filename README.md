@@ -2,7 +2,7 @@
 
 Oak Park, IL Tax Data an Analysis
 
-The file "oak park tax history.csv" contains historicgit addal tax levy data for Oak park taxing agencies.
+The file "oak park tax history.csv" contains historical tax levy data for Oak park taxing agencies.
 
 ## Columns
 
