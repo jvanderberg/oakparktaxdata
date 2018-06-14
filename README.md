@@ -1,4 +1,4 @@
-# Oak Park Tax Datagi
+# Oak Park Tax Data
 
 Oak Park, IL Tax Data an Analysis
 
@@ -35,4 +35,4 @@ https://www.cookcountyclerk.com/service/tax-agency-reports
 ## Notes
 
 -   For simplicity, the "Agency" column rolls up the Library into the Village of Oak Park, and the mental health and general assistance funds into the Township, the 'Detail' column breaks those out if you want to do summaries that perserve this detail.
--   The 'D200' Agency is the Oak Park only portion of OPRF's level. The D200 Total agency is the full OPRF levy. If you are making summary rollups of this data, only include one or the other.
+-   The 'D200' Agency is the Oak Park only portion of OPRF's level. The 'D200 Total' agency is the full OPRF levy. If you are making summary rollups of this data, only include one or the other.
