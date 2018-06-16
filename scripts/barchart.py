@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 pivot = pd.read_csv("oak park tax history summary.csv")
 pivot = pivot[pivot['Year'] != 'All']
 plt.close()
-plt.figure(figsize=(10,6), dpi=200)
+plt.figure(figsize=(6,5), dpi=200)
 width = 0.75
 year = np.array(pivot.Year).astype(int)
 p1 = plt.bar(year,pivot['D200']/1000000, width, color='#3366cc')

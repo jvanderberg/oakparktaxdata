@@ -14,7 +14,7 @@ cpi = (final.CPI - basecpi) / basecpi
 awi = (final.AWI - baseawi) / baseawi
 
 plt.close()
-plt.figure(figsize=(10,6), dpi=200)
+plt.figure(figsize=(7,6), dpi=200)
 plt.ylabel("Percentage increase")
 plt.title('Comparison of Levy to Wage and Price Increases')
 line1=plt.plot(levy * 100, color='#dc3912', linewidth=2)
@@ -27,7 +27,7 @@ plt.grid(axis='y', linewidth=0.5)
 plt.savefig('charts/wage and price comparisons.png')
 
 plt.close()
-plt.figure(figsize=(10,6), dpi=200)
+plt.figure(figsize=(7,6), dpi=200)
 plt.ylabel("Percentage increase")
 plt.title('Inflation Adjusted Levy')
 line1=plt.plot((levy - awi) * 100, color='#dc3912', linewidth=2)
