@@ -29,7 +29,7 @@ The file "oak park tax history summary.csv" contains the totals by year in a piv
 -   _CPI_ The CPI-U for that year from the BLS https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
 -   _AWI_ The Average Wage Index from the Social Security Administration https://www.ssa.gov/oact/cola/AWI.html
 
-The file 'projections.csv' contains a best fit exponential fit to the existing data.
+The file 'projections.csv' contains an exponential best fit to the existing data.
 
 ## Columns
 
@@ -43,9 +43,11 @@ The source of this data is the Cook County Clerk, using their online tool for 20
 
 https://www.cookcountyclerk.com/service/tax-agency-reports
 
-cpi.csv is from https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
+These files are available in the "data" directory.
 
-awi.csv is from https://www.ssa.gov/oact/cola/AWI.html
+cpi.csv is derived from https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
+
+awi.csv is derived from https://www.ssa.gov/oact/cola/AWI.html
 
 ## Notes
 
