@@ -13,7 +13,7 @@ The file "oak park tax history.csv" contains historical tax levy data for Oak pa
 -   _Rate_ The tax rate
 -   _EAV_ Total equalized assessed value of the properties subject to the tax rate
 
-In all cases Levy = Rate \* EAV
+In all cases Levy = Rate / EAV
 
 The file "oak park tax history summary.csv" contains the totals by year in a pivoted format.
 
@@ -25,13 +25,27 @@ The file "oak park tax history summary.csv" contains the totals by year in a piv
 -   _Oak Park Township_ The township levy, including general assistance and mental health
 -   _Park District_ The Oak Park park district
 -   _Village of Oak Park_ The Village levy with the library levy added in
--   _Grand Total_ The total levy for that year
+-   _All_ The total levy for that year
+-   _CPI_ The CPI-U for that year from the BLS https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
+-   _AWI_ The Average Wage Index from the Social Security Administration https://www.ssa.gov/oact/cola/AWI.html
+
+The file 'projections.csv' contains a best fit exponential fit to the existing data.
+
+## Columns
+
+-   _Year_ The Levy year
+-   _Levy_ The Levy in that year
+-   _Fit_ The best exponential fit for the year, fit to the existing data and projected out 20 years.
 
 ## _Source_
 
 The source of this data is the Cook County Clerk, using their online tool for 2006-2016, and a historical records request for previous years.
 
 https://www.cookcountyclerk.com/service/tax-agency-reports
+
+cpi.csv is from https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
+
+awi.csv is from https://www.ssa.gov/oact/cola/AWI.html
 
 ## Notes
 
