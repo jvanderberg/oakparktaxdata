@@ -9,5 +9,9 @@ pivot = pivot.join(cpi.CPI)
 awi = pd.read_csv("awi.csv")
 awi = awi.set_index(awi.Year)
 pivot = pivot.join(awi.AWI)
+d97enrollment = pd.read_csv("d97demographics.csv")
+d97enrollment = d97enrollment.set_index(d97enrollment.Year)
+pivot = pivot.join(pd.Series(d97enrollment['D97 Enrollment']))
+
 
 pivot.to_csv('oak park tax history summary.csv')
