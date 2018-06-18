@@ -45,11 +45,23 @@ https://www.cookcountyclerk.com/service/tax-agency-reports
 
 These files are available in the "data" directory.
 
-cpi.csv is derived from https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
+cpi.csv is derived from the CPI-U found at https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
 
 awi.csv is derived from https://www.ssa.gov/oact/cola/AWI.html
+
+d97demographics.csv is derived from https://www.op97.org/teach-learn/state-report-cards
 
 ## Notes
 
 -   For simplicity, the "Agency" column rolls up the Library into the Village of Oak Park, and the mental health and general assistance funds into the Township, the 'Detail' column breaks those out if you want to do summaries that perserve this detail.
 -   The 'D200' Agency is the Oak Park only portion of OPRF's levy. The 'D200 Total' agency is the full OPRF levy. If you are making summary rollups of this data, only include one or the other.
+
+# Generating the charts and derived data
+
+1.  Install python v3
+2.  pip install pandas
+3.  pip install numpy
+4.  pip install matplotlib
+5.  Run generate.cmd in the root.
+
+This will recreate all of the charts, and generate projections.csv and "oak park tax history summary.csv"

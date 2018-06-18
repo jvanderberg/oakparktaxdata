@@ -28,7 +28,7 @@ line4=plt.plot(awi * 100, color='#990099', linewidth=2)
 line5=plt.plot(d97enrollment * 100,  color='#109618', linewidth=2)
 
 plt.xticks([2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016])
-plt.legend(['D97 Levy', 'Per Student Levy', 'Prices', 'Wages', 'Enrollment'])
+plt.legend(['D97 Levy', 'Prices', 'Wages', 'Enrollment'])
 plt.grid(axis='y', linewidth=0.5)
 
 plt.savefig('charts/d97 enrollment wage and price comparisons.png')
