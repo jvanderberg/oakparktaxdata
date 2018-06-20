@@ -15,6 +15,7 @@ awi = (final.AWI - baseawi) / baseawi
 
 cpiadjusted = final.All * basecpi / final.CPI 
 awiadjusted = final.All * baseawi / final.AWI 
+
 plt.close()
 plt.figure(figsize=(7,6), dpi=200)
 plt.ylabel("Percentage increase")
