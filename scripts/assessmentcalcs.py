@@ -1,54 +1,62 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-rate = 12.191
-equalizer = 2.9084
+#rate = 12.191
+#equalizer = 2.9084
 bucketsize = 2500
+pctbucketsize = 5
 
-assessments = pd.read_csv("assessments.csv",  thousands=',')
+assessments = pd.read_csv("combinedassessments.csv",  thousands=',')
 assessments = assessments[assessments.use == 'Single Family']
-assessments['taxbill'] = assessments.combinedassessedvalue * \
-    rate / 100 * equalizer
+assessments['taxbill'] = assessments.taxbill2017
 
 assessments['range'] = (assessments.taxbill / bucketsize)
 assessments['range'] = np.where(
     np.logical_and(assessments['range'] > 0, assessments['range'] < 1000000), assessments['range'], 0)
 assessments.range = assessments.range.astype(int) * bucketsize
+assessments['lastyearrange'] = assessments.lastyearbillchangepct / pctbucketsize
+assessments['lastyearrange'] = np.where(
+    np.logical_and(assessments['lastyearrange'] > -60 / pctbucketsize, assessments['lastyearrange'] < 70 / pctbucketsize), assessments['lastyearrange'], 0)
+assessments.lastyearrange = assessments.lastyearrange.astype(int) * pctbucketsize
+
 assessments['temp'] = (
-    assessments.range * bucketsize).map('{:,.0f} to'.format)
+    assessments.range).map('{:,.0f} to'.format)
 assessments['temp2'] = (
-    (assessments.range + 1) * bucketsize).map(' {:,.0f}'.format)
+    (assessments.range/bucketsize + 1) * bucketsize).map(' {:,.0f}'.format)
 
 assessments['rangedescription'] = assessments.temp + assessments.temp2
 assessments = assessments.drop(columns=['temp', 'temp2'], axis=1)
-pivot = assessments.pivot_table(
-    columns='range', values='taxbill', aggfunc='count')
-print pivot
+assessments = assessments.sort_values(by=['range'])
+pivot = assessments.pivot_table( columns=['range'], values='taxbill', aggfunc='count')
 pivot = pivot.transpose()
-print pivot.index
+pivot['rangestr'] = (pivot.index).map('${:,.0f}'.format)
 
-print pivot
-# cpi = pd.read_csv("cpi.csv")
-# cpi = cpi.set_index(cpi.Year)
-# pivot = pivot.join(cpi.CPI)
-# awi = pd.read_csv("awi.csv")
-# awi = awi.set_index(awi.Year)
-# pivot = pivot.join(awi.AWI)
-# d97enrollment = pd.read_csv("d97demographics.csv")
-# d97enrollment = d97enrollment.set_index(d97enrollment.Year)
-# pivot = pivot.join(pd.Series(d97enrollment['D97 Enrollment']))
+pivot2 = assessments.pivot_table( columns=['lastyearrange'], values='taxbill', aggfunc='count')
 
 plt.close()
-plt.figure(figsize=(6, 5), dpi=200)
+plt.figure(figsize=(10, 8), dpi=200)
 width = 1
-plt.bar(pivot.index, pivot.taxbill, color='#3366cc', bottom=0)
-
-plt.ylabel("Tax Levy $ (Millions)")
-plt.title('Total Oak Park Tax Levy by Year')
+plt.bar(pivot.rangestr, pivot.taxbill, color='#3366cc', align='edge')
+plt.xticks(rotation=45)
+plt.ylabel("Number of Homes")
+plt.title('Count of Oak Park Single Family Homes by Tax Bill Amount')
 plt.grid(axis='y', linewidth=0.5)
 plt.legend(['Count'])
 
 plt.savefig('charts/taxbillcounts.png')
-# pivot.to_csv('oak park tax history summary.csv')
 pivot.to_csv('assessmentpivot.csv')
-assessments.to_csv('temp.csv')
+
+pivot2 = pivot2.transpose()
+print(pivot2)
+plt.close()
+plt.figure(figsize=(10, 8), dpi=200)
+pivot2['lastyearrangestr'] = (pivot2.index).map('{:.0f}%'.format)
+width = 1
+plt.bar(pivot2.lastyearrangestr, pivot2.taxbill, color='#3366cc', align='edge')
+plt.xticks(rotation=45)
+plt.ylabel("Number of Homes")
+plt.title('Count of Oak Park Single Family Homes by Tax Bill Percentage Change, 2016-2017')
+plt.grid(axis='y', linewidth=0.5)
+plt.legend(['Count'])
+
+plt.savefig('charts/taxbillpercentagecounts.png')
