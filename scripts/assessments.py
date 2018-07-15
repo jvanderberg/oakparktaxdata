@@ -61,7 +61,8 @@ sf = sf[combined['fiveyearbillchangepct'] > -100]
 print(sf['lastyearbillchangepct'].describe(
     percentiles=[.1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99]))
 print(sf['fiveyearbillchangepct'].describe(
-    percentiles=[.1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99]))
+    percentiles=[.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99]))
+print(sf.median())
 import matplotlib.pyplot as plt
 plt.close()
 plt.figure(figsize=(6, 5), dpi=200)
