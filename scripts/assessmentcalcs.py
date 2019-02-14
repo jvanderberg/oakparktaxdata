@@ -1,14 +1,16 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-#rate = 12.191
-#equalizer = 2.9084
+import common
+
+taxyear = common.getTaxYear()
 bucketsize = 2500
 pctbucketsize = 5
-
-assessments = pd.read_csv("combinedassessments.csv",  thousands=',')
+fiveyearsago = taxyear - 4
+assessments = pd.read_csv(
+    str(taxyear)+"/combinedassessments.csv",  thousands=',')
 assessments = assessments[assessments.use == 'Single Family']
-assessments['taxbill'] = assessments.taxbill2017
+assessments['taxbill'] = assessments['taxbill'+str(taxyear)]
 
 assessments['range'] = (assessments.taxbill / bucketsize)
 assessments['range'] = np.where(
@@ -22,7 +24,8 @@ assessments.fiveyearrange = assessments.fiveyearrange.astype(
 assessments['lastyearrange'] = assessments.lastyearbillchangepct / pctbucketsize
 assessments['lastyearrange'] = np.where(
     np.logical_and(assessments['lastyearrange'] > -60 / pctbucketsize, assessments['lastyearrange'] < 70 / pctbucketsize), assessments['lastyearrange'], 0)
-assessments.lastyearrange = assessments.lastyearrange.astype(int) * pctbucketsize
+assessments.lastyearrange = assessments.lastyearrange.astype(
+    int) * pctbucketsize
 
 assessments['temp'] = (
     assessments.range).map('{:,.0f} to'.format)
@@ -50,8 +53,8 @@ plt.title('Count of Oak Park Single Family Homes by Tax Bill Amount')
 plt.grid(axis='y', linewidth=0.5)
 plt.legend(['Count'])
 
-plt.savefig('charts/taxbillcounts.png')
-pivot.to_csv('assessmentpivot.csv')
+plt.savefig(str(taxyear)+'/charts/taxbillcounts.png')
+pivot.to_csv(str(taxyear)+'/assessmentpivot.csv')
 
 pivot2 = pivot2.transpose()
 print(pivot2)
@@ -63,13 +66,14 @@ plt.bar(pivot2.fiveyearrangestr, pivot2.taxbill, color='#3366cc', align='edge')
 plt.xticks(rotation=45)
 plt.ylabel("Number of Homes")
 plt.title(
-    'Count of Oak Park Single Family Homes by Tax Bill Percentage Change, 2013-2017')
+    'Count of Oak Park Single Family Homes by Tax Bill Percentage Change, '+str(fiveyearsago)+'-'+str(taxyear))
 plt.grid(axis='y', linewidth=0.5)
 plt.legend(['Count'])
 
-plt.savefig('charts/taxbillpercentagecountsfiveyear.png')
+plt.savefig(str(taxyear)+'/charts/taxbillpercentagecountsfiveyear.png')
 
-pivot2 = assessments.pivot_table( columns=['lastyearrange'], values='taxbill', aggfunc='count')
+pivot2 = assessments.pivot_table(
+    columns=['lastyearrange'], values='taxbill', aggfunc='count')
 
 plt.close()
 plt.figure(figsize=(10, 8), dpi=200)
@@ -81,8 +85,8 @@ plt.title('Count of Oak Park Single Family Homes by Tax Bill Amount')
 plt.grid(axis='y', linewidth=0.5)
 plt.legend(['Count'])
 
-plt.savefig('charts/taxbillcounts.png')
-pivot.to_csv('assessmentpivot.csv')
+plt.savefig(str(taxyear)+'/charts/taxbillcounts.png')
+pivot.to_csv(str(taxyear)+'/assessmentpivot.csv')
 
 pivot2 = pivot2.transpose()
 print(pivot2)
@@ -93,9 +97,9 @@ width = 1
 plt.bar(pivot2.lastyearrangestr, pivot2.taxbill, color='#3366cc', align='edge')
 plt.xticks(rotation=45)
 plt.ylabel("Number of Homes")
-plt.title('Count of Oak Park Single Family Homes by Tax Bill Percentage Change, 2016-2017')
+plt.title(
+    'Count of Oak Park Single Family Homes by Tax Bill Percentage Change, '+str(taxyear-1)+'-'+str(taxyear))
 plt.grid(axis='y', linewidth=0.5)
 plt.legend(['Count'])
 
-plt.savefig('charts/taxbillpercentagecounts.png')
-
+plt.savefig(str(taxyear)+'/charts/taxbillpercentagecounts.png')

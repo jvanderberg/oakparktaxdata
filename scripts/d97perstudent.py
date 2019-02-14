@@ -1,31 +1,35 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import common
 
-baseyear = 2002
+taxyear, baseyear = common.getBaseAndTaxYear()
+
 final = pd.read_csv("oak park tax history summary.csv")
 final = final[final.Year != 'All']
 
 final = final.set_index(np.array(final.Year).astype(int))
-final = final[ final.index > 2001]
+final = final[final.index >= baseyear]
 based97enrollment = final['D97 Enrollment'][baseyear]
 baseawi = final.AWI[baseyear]
 baseperstudent = final.D97[baseyear] / based97enrollment
-baseperstudentadjused = baseperstudent;
-perstudent = ((final.D97 /  final['D97 Enrollment']) - baseperstudent) / baseperstudent
-perstudentadjusted =  ((final.D97 /  final['D97 Enrollment']) * baseawi / final.AWI - baseperstudent) / baseperstudent
-d97enrollment = (final['D97 Enrollment'] - based97enrollment) / based97enrollment
+perstudent = ((final.D97 / final['D97 Enrollment']
+               ) - baseperstudent) / baseperstudent
+perstudentadjusted = ((final.D97 / final['D97 Enrollment'])
+                      * baseawi / final.AWI - baseperstudent) / baseperstudent
+d97enrollment = (final['D97 Enrollment'] -
+                 based97enrollment) / based97enrollment
 
 
 plt.close()
-plt.figure(figsize=(7,6), dpi=200)
+plt.figure(figsize=(7, 6), dpi=200)
 plt.title("D97 Per Student Levy Growth")
 plt.ylabel('Percentage Increase')
-line1=plt.plot(perstudent * 100, color='#dc3912', linewidth=2)
-line2=plt.plot(perstudentadjusted * 100,  color='#3366cc', linewidth=2)
+line1 = plt.plot(perstudent * 100, color='#dc3912', linewidth=2)
+line2 = plt.plot(perstudentadjusted * 100,  color='#3366cc', linewidth=2)
 
-plt.xticks([2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016])
+plt.xticks(np.arange(baseyear, taxyear, step=2))
 plt.legend(['Per Student Levy', 'Per Student Wage Adjusted'])
 plt.grid(axis='y', linewidth=0.5)
 
-plt.savefig('charts/d97 per student levy growth.png')
+plt.savefig(str(taxyear)+'/charts/d97 per student levy growth.png')

@@ -1,12 +1,16 @@
 from splinter import Browser
 import pandas as pd
 import time
+import sys
 import splinter as splinter
+import common
+
+taxyear = getTaxYear()
 
 pins = pd.read_csv("oppins.csv")
 
 # Don't start processing pins until you hit 'startpin'
-startpin = '16-18-430-001-0000'
+#startpin = '16-18-430-001-0000'
 try:
     startpin
 except NameError:
@@ -57,7 +61,7 @@ with Browser() as browser:
 
                 button.click()
 
-                baseyear = 2017
+                baseyear = int(taxyear)
 
                 # Interact with elements
                 if browser.is_element_present_by_id("ContentPlaceHolder1_TaxBillInfo_rptTaxBill_taxBillAmount_1", 10):
@@ -101,4 +105,4 @@ with Browser() as browser:
 
                     results = results.append(row)
             # print results
-        results.to_csv('assessments2.csv')
+        results.to_csv(taxyear+'/assessments2.csv')

@@ -6,7 +6,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import sys
 import random
+import common
+
+taxyear = common.getTaxYear()
 
 pins = pd.read_csv("oppins.csv")
 
@@ -67,7 +71,7 @@ for index, pin in pins.iterrows():
 
     if processpin == False:
         continue
-    print pin.PIN
+    print(pin.PIN)
 
     url = 'http://www.cookcountyassessor.com/Property.aspx?mode=details&pin=' + \
         pin.PIN.replace("-", "")
@@ -111,19 +115,16 @@ for index, pin in pins.iterrows():
 
     row = pd.DataFrame()
     for item in items:
-        span = html.find_all(attrs={'id': item.values()[0]})
+        span = html.find_all(attrs={'id': list(item.values())[0]})
         try:
-            row[item.keys()[0]] = [span[0].get_text()]
+            row[list(item.keys())[0]] = [span[0].get_text()]
 
         except:
-            print 'Error processing '+pin.PIN + \
-                ' ' + item.keys()[0] + ' ' + url
+            print('Error processing '+pin.PIN +
+                  ' ' + list(item.keys())[0] + ' ' + url)
 
     results = results.append(row)
+    results.to_csv(str(taxyear)+'/assessments.csv')
 
     if index % 10 == 0:
-        print '------- ' + str(index) + ' -------'
-
-print results
-results.to_csv('assessments.csv')
-# print pindiv[0].get_text(), address[0].get_text()
+        print('------- ' + str(index) + ' -------')

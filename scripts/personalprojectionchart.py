@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
-baseyear = 2017
+import common
+baseyear = common.getTaxYear()
 projection = pd.read_csv("projections.csv")
 projection = projection.set_index(projection.Year)
 projection = projection[projection.index >= baseyear]
@@ -17,7 +17,7 @@ def project(col, baseyear):
              str(baseyear+15), str(baseyear+20)]
     p1 = plt.bar(years, p[p.index.isin(years)])
 
-    plt.title('Projected Future Tax  $'+col+' in 2017')
+    plt.title('Projected Future Tax  $'+col+' in '+str(baseyear))
     plt.xticks(years, (
         str(baseyear), '5 years', '10 years', '15 years', '20 years'))
     rects = p1.patches
@@ -59,11 +59,11 @@ def project(col, baseyear):
     plt.tick_params(top=False, bottom=False, left=False,
                     right=False, labelleft=False, labelbottom=True)
 
-    plt.savefig('charts/personal projection'+col+'.png')
+    plt.savefig(str(baseyear)+'/charts/personal projection'+col+'.png')
 
 
-project('10k', 2017)
-project('12.5k', 2017)
-project('15k', 2017)
-project('17.5k', 2017)
-project('20k', 2017)
+project('10k', baseyear)
+project('12.5k', baseyear)
+project('15k', baseyear)
+project('17.5k', baseyear)
+project('20k', baseyear)
