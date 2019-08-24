@@ -65,3 +65,10 @@ d97demographics.csv is derived from https://www.op97.org/teach-learn/state-repor
 5.  Run generate.cmd in the root.
 
 This will recreate all of the charts, and generate projections.csv and "oak park tax history summary.csv"
+
+YYYY is the current tax year
+python scripts/scrapecookcounty.py YYYY
+python scripts/scrapeassessments.py YYYY
+python scripts/assessments.py YYYY
+python scripts/assessmentcalcs.py YYYY
+
