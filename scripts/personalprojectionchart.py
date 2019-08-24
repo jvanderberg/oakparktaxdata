@@ -11,7 +11,6 @@ projection = projection[projection.index >= baseyear]
 def project(col, baseyear):
     plt.close()
     plt.figure(figsize=(6, 5), dpi=200)
-    width = 0.7
     p = projection[col]
     years = [str(baseyear), str(baseyear+5), str(baseyear+10),
              str(baseyear+15), str(baseyear+20)]
