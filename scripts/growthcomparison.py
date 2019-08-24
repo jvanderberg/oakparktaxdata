@@ -45,7 +45,8 @@ p4 = plt.plot(park, color='#109618')
 p5 = plt.plot(village, color='#990099')
 
 plt.xticks(np.arange(baseyear, taxyear, step=5))
-plt.legend()
+plt.legend((p1[0], p2[0], p3[0], p4[0], p5[0]), ('D200', 'D97',
+                                                 'Oak Park Township', 'Park District', 'Village of Oak Park'), loc='upper left')
 plt.grid(axis='y', linewidth=0.5)
 
 plt.savefig(str(taxyear)+'/charts/levy growth comparison.png')

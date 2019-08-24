@@ -20,7 +20,7 @@ The file "oak park tax history summary.csv" contains the totals by year in a piv
 ## Columns
 
 -   _Year_ The tax year
--   _D200_ The Oak park portion of the OPRF levy for that year
+-   _D200_ The Oak park portion of the OPRF levy for that year, this is calculated by taking the (Village of OP EAV / D200 Eav) * D200 Levy
 -   _D97_ The Oak Park Elementary/Middle school levy
 -   _Oak Park Township_ The township levy, including general assistance and mental health
 -   _Park District_ The Oak Park park district
@@ -62,13 +62,22 @@ d97demographics.csv is derived from https://www.op97.org/teach-learn/state-repor
 2.  pip install pandas
 3.  pip install numpy
 4.  pip install matplotlib
-5.  Run generate.cmd in the root.
+5.  Run the scripts in the order below
 
-This will recreate all of the charts, and generate projections.csv and "oak park tax history summary.csv"
 
 YYYY is the current tax year
 python scripts/scrapecookcounty.py YYYY
 python scripts/scrapeassessments.py YYYY
 python scripts/assessments.py YYYY
 python scripts/assessmentcalcs.py YYYY
-
+python scripts/pivot.py YYYY
+python scripts/barchart.py YYYY
+python scripts/barchartpercentage.py YYYY
+python scripts/taxincreasedistribution.py YYYY
+python scripts/projection.py YYYY  
+python scripts/projectionchart.py YYYY
+python scripts/personalprojectionchart.py YYYY
+python scripts/d97enrollmentcomparison.py YYYY 2002
+python scripts/d97perstudent.py YYYY 2002
+python scripts/twelvekcomparison.py YYYY
+python scripts/growthcomparison.py YYYY 2006

@@ -14,6 +14,7 @@ logcpi = np.log(pivot['CPI'])
 logawi = np.log(pivot['AWI'])
 year = np.array(pivot.Year).astype(int)
 loglevyfit = np.polyfit(year, y=loglevy, deg=1)
+print(loglevyfit)
 logcpifit = np.polyfit(year, y=logcpi, deg=1)
 logawifit = np.polyfit(year, y=logawi, deg=1)
 levyfit = pd.DataFrame(index=pd.Series(range(1999, baseyear+25)),  data=np.exp(

@@ -14,6 +14,7 @@ def convert(column, df):
 taxyear = common.getTaxYear()
 combined = pd.read_csv(str(taxyear)+"/combinedassessments.csv",  thousands=',')
 fiveyearsago = taxyear - 4
+lastyear = taxyear - 1
 sf = combined[combined['use'] == 'Single Family']
 sf = sf[combined['lastyearbillchangepct'] < 200]
 sf = sf[combined['fiveyearbillchangepct'] < 400]
@@ -43,8 +44,8 @@ plt.figure(figsize=(6, 5), dpi=200)
 width = 0.75
 
 plt.scatter(y=sf['lastyearbillchangepct'], s=0.5, x=sf['taxbill2016'])
-plt.ylabel("Percentage increase 2016-2017")
-plt.xlabel('2016 Tax bill $')
+plt.ylabel('Percentage increase '+str(lastyear)+'-'+str(taxyear))
+plt.xlabel(str(lastyear)+' Tax bill $')
 plt.title('Tax increase distributions past year')
 
 plt.savefig(str(taxyear) + '/charts/last year increase.png')
