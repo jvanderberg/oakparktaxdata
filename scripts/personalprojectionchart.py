@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import common
 baseyear = common.getTaxYear()
-projection = pd.read_csv("projections.csv")
+projection = pd.read_csv(str(baseyear)+"/projections.csv")
 projection = projection.set_index(projection.Year)
 projection = projection[projection.index >= baseyear]
 
