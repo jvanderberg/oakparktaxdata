@@ -82,3 +82,4 @@ python scripts/d97perstudent.py YYYY 2002
 python scripts/twelvekcomparison.py YYYY
 python scripts/growthcomparison.py YYYY 2006
 python scripts/barchartpercentagechange.py YYYY 2000
+python scripts/wageandpricecomparison.py YYYY 1999
