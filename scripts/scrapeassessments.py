@@ -73,7 +73,7 @@ for index, pin in pins.iterrows():
         continue
     print(pin.PIN)
 
-    url = 'http://www.cookcountyassessor.com/Property.aspx?mode=details&pin=' + \
+    url = 'https://www.cookcountyassessor.com/Property.aspx?mode=details&pin=' + \
         pin.PIN.replace("-", "")
     time.sleep(0.25)
     contents = simple_get(url)

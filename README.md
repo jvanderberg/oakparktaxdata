@@ -56,18 +56,46 @@ d97demographics.csv is derived from https://www.op97.org/teach-learn/state-repor
 -   For simplicity, the "Agency" column rolls up the Library into the Village of Oak Park, and the mental health and general assistance funds into the Township, the 'Detail' column breaks those out if you want to do summaries that perserve this detail.
 -   The 'D200' Agency is the Oak Park only portion of OPRF's levy. The 'D200 Total' agency is the full OPRF levy. If you are making summary rollups of this data, only include one or the other.
 
-# Generating the charts and derived data
+# Installation
+
+##Local
 
 1.  Install python v3
 2.  pip install pandas
 3.  pip install numpy
 4.  pip install matplotlib
-5.  Run the scripts in the order below
+5.  Install Firefox
+6.  Install gecko-driver
+7.  pip install selenium
+
+##Docker
+
+1. Install Docker desktop
+2. docker build -t oakparktaxdata -f .\.devcontainer\Dockerfile .
+3. docker build -f .\.devcontainer\Dockerfile -t oakparktaxdata .
+4. Run the docker image:
+
+powershell:
+docker run -v ${pwd}:/workspaces/oakparktaxdata -w /workspaces/oakparktaxdata -it oakparktaxdata /bin/bash
+
+cmd.exe
+docker run -v %cd%:/workspaces/oakparktaxdata -w /workspaces/oakparktaxdata -it oakparktaxdata /bin/bash
+
+# Generating the charts and derived data
+
+1. 
 
 
-YYYY is the current tax year
+YYYY is the current tax year, for example, in 2019, the current tax year was 2018.
+
+Run the scrapers, these will take quite a bit of time, perhaps 24-48 hours, and might need to be restarted:
+
 python scripts/scrapecookcounty.py YYYY
 python scripts/scrapeassessments.py YYYY
+
+This creates YYYY/assessments.csv and YYYY/cookcountyassessments.csv
+
+Then run:
 python scripts/assessments.py YYYY
 python scripts/assessmentcalcs.py YYYY
 python scripts/pivot.py YYYY

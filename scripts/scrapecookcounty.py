@@ -10,7 +10,7 @@ taxyear = common.getTaxYear()
 pins = pd.read_csv("oppins.csv")
 
 # Don't start processing pins until you hit 'startpin'
-startpin = '16-17-331-037-1012'
+# startpin = '16-17-331-037-1012'
 try:
     startpin
 except NameError:
