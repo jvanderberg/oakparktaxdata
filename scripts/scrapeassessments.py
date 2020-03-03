@@ -9,13 +9,15 @@ import time
 import sys
 import random
 import common
+import re
 
 taxyear = common.getTaxYear()
 
-pins = pd.read_csv("oppins.csv")
-
+pins = pd.read_csv("newpins.csv")
+pins['PIN'] = pins['PIN'].astype(str)
 # Don't start processing pins until you hit 'startpin'
-# startpin = '16-05-100-035-0000'
+
+#startpin = '16-18-130-020-0000'
 try:
     startpin
 except NameError:
@@ -65,6 +67,31 @@ if startpin == None:
 
 results = pd.DataFrame()
 
+items = [
+    {'classification': 'Property Classification'},
+    {'landsqft': 'Square Footage (Land)'},
+    {'neighborhood': 'Neighborhood'},
+    {'taxcode': 'Taxcode'},
+    {'landassessedvalue': 'Land Assessed Value'},
+    {'buildingassessedvalue': 'Building Assessed Value'},
+    {'combinedassessedvalue': 'Total Assessed Value'},
+    {'description': 'Description'},
+    {'residencetype': 'Residence Type'},
+    {'use': 'Use'},
+    {'exteriorconstruction': 'Exterior Construction'},
+    {'fullbaths': 'Full Baths'},
+    {'halfbaths': 'Half Baths'},
+    {'basement': 'Basement'},
+    {'attic': 'Attic'},
+    {'centralair': 'Central Air'},
+    {'fireplaces': 'Number of Fireplaces'},
+    {'garage': 'Garage Size/Type'},
+    {'age': 'Age'},
+    {'buildingsqft': 'Building Square Footage'},
+    {'assessmentpass': 'Assessment Pass'}
+]
+
+
 for index, pin in pins.iterrows():
     if startpin != None and pin.PIN == startpin:
         processpin = True
@@ -72,59 +99,70 @@ for index, pin in pins.iterrows():
     if processpin == False:
         continue
     print(pin.PIN)
-
-    url = 'https://www.cookcountyassessor.com/Property.aspx?mode=details&pin=' + \
-        pin.PIN.replace("-", "")
-    time.sleep(0.25)
-    contents = simple_get(url)
-    html = BeautifulSoup(contents, 'html.parser')
-
-    items = [{'pin': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoPIN'},
-             {'address': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoAddress'},
-             {'city': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoCity'},
-             {'township': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoTownship'},
-             {'classification': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoClassification'},
-             {'landsqft': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoSqFt'},
-             {'neighborhood': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoNBHD'},
-             {'taxcode': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoTaxcode'},
-             {'year': 'ctl00_phArticle_ctlPropertyDetails_lblPropInfoCurYear'},
-             {'landassessedvalue': 'ctl00_phArticle_ctlPropertyDetails_lblAsdValLandFirstPass'},
-             {'buildingassessedvalue': 'ctl00_phArticle_ctlPropertyDetails_lblAsdValBldgFirstPass'},
-             {'combinedassessedvalue': 'ctl00_phArticle_ctlPropertyDetails_lblAsdValTotalFirstPass'},
-             {'landassessedvaluepreviousyear': 'ctl00_phArticle_ctlPropertyDetails_lblAsdValLandCertified'},
-             {'buildingassessedvaluepreviousyear': 'ctl00_phArticle_ctlPropertyDetails_lblAsdValBldgCertified'},
-             {'combinedassessedvaluepreviousyear': 'ctl00_phArticle_ctlPropertyDetails_lblAsdValTotalCertified'},
-             {'marketvalue': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharMktValCurrYear'},
-             {'marketvaluepreviousyear': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharMktValPrevYear'},
-             {'description': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharDesc'},
-             {'residencetype': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharResType'},
-             {'use': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharUse'},
-             {'apartments': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharApts'},
-             {'exteriorconstruction': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharExtConst'},
-             {'fullbaths': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharFullBaths'},
-             {'halfbaths': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharHalfBaths'},
-             {'basement': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharBasement'},
-             {'attic': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharAttic'},
-             {'centralair': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharCentAir'},
-             {'fireplaces': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharFrpl'},
-             {'garage': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharFrpl'},
-             {'age': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharAge'},
-             {'buildingsqft': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharBldgSqFt'},
-             {'assessmentpass': 'ctl00_phArticle_ctlPropertyDetails_lblPropCharAsmtPass'}
-             ]
-
-    row = pd.DataFrame()
-    for item in items:
-        span = html.find_all(attrs={'id': list(item.values())[0]})
+    retries = 0
+    while retries < 5:
         try:
-            row[list(item.keys())[0]] = [span[0].get_text()]
+            url = 'https://www.cookcountyassessor.com/pin/' + \
+                pin.PIN.replace("-", "")+ "/print"
+            contents = simple_get(url)
+            html = BeautifulSoup(contents, 'html.parser')
 
+            row = pd.DataFrame()
+            marketValues = html.find_all("span",text="Estimated  Market Value")
+            parent = marketValues[0].parent
+            value  = parent.findNext('span', class_="detail-row--detail")
+            row['pin'] = [pin.PIN]
+            row['marketvalue'] = [value.contents[0]]
+
+            parent = marketValues[1].parent
+            value  = parent.findNext('span', class_="detail-row--detail")
+            row['marketvaluepreviousyear'] = [value.contents[0]]
+
+            address = html.find("div", class_="address")
+            address = address.contents[1].contents[0]
+            addressparts = address.split(" ● ")
+            row['address'] = " ".join(addressparts[0].split())
+            row['city'] = addressparts[1]
+            row['township'] = addressparts[2]
+            spans = html.find_all( class_="detail-row--label")
+
+            for item in items:
+                for span in spans:
+                    try:
+                        if (span.contents[0] ==list(item.values())[0] ):
+
+                        #label = html.find("span", text=list(item.values())[0], class_="detail-row--label" )
+                            parent = span.parent
+                            value  = parent.findNext('span', class_="detail-row--detail")
+                            row[list(item.keys())[0]] = [value.contents[0]]
+
+                    except:
+                    
+                        print('Error processing '+pin.PIN +
+                            ' ' + list(item.keys())[0] + ' ' + url)
+
+            results = results.append(row)
+            break
+        except KeyboardInterrupt:
+            print("Exiting...")
+            results.to_csv(str(taxyear)+'/assessments2.csv')
+
+            exit(0)
         except:
-            print('Error processing '+pin.PIN +
-                  ' ' + list(item.keys())[0] + ' ' + url)
+            retries = retries + 1
+            print("Retrying: "+ str(retries))
+            print( sys.exc_info()[0])
+            if (retries >= 5):
+                results.to_csv(str(taxyear)+'/assessments2.csv')
 
-    results = results.append(row)
-    results.to_csv(str(taxyear)+'/assessments.csv')
+                print("Retries failing, exiting...")
+                exit(1)
+            time.sleep(5)
 
-    if index % 10 == 0:
+
+    if index % 100 == 0:
         print('------- ' + str(index) + ' -------')
+        results.to_csv(str(taxyear)+'/assessments2.csv')
+
+results.to_csv(str(taxyear)+'/assessments2.csv')
+
