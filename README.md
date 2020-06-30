@@ -45,7 +45,7 @@ https://www.cookcountyclerk.com/service/tax-agency-reports
 
 These files are available in the "data" directory.
 
-cpi.csv is derived from the CPI-U found at https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-201804.pdf
+cpi.csv is derived from the CPI-U found at https://www.bls.gov/regions/midwest/data/consumerpriceindexhistorical_us_table.pdf
 
 awi.csv is derived from https://www.ssa.gov/oact/cola/AWI.html
 
@@ -110,4 +110,4 @@ python scripts/d97perstudent.py YYYY 2002
 python scripts/twelvekcomparison.py YYYY
 python scripts/growthcomparison.py YYYY 2006
 python scripts/barchartpercentagechange.py YYYY 2000
-python scripts/wageandpricecomparison.py YYYY 1999
+python scripts/wagepricecomparison.py YYYY 1999
