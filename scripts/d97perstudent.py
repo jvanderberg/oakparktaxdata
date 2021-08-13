@@ -31,5 +31,5 @@ line2 = plt.plot(perstudentadjusted * 100,  color='#3366cc', linewidth=2)
 plt.xticks(np.arange(baseyear, taxyear, step=2))
 plt.legend(['Per Student Levy', 'Per Student Wage Adjusted'])
 plt.grid(axis='y', linewidth=0.5)
-
+perstudentadjusted.to_csv(str(taxyear)+"/d97 per student levy growth.csv")
 plt.savefig(str(taxyear)+'/charts/d97 per student levy growth.png')
