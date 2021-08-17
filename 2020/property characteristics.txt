@@ -1,0 +1,2 @@
+property characteristics
+https://datacatalog.cookcountyil.gov/resource/bcnq-qi2z.csv?town_code=27&limit=20000
