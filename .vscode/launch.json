@@ -4,12 +4,20 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
+
+
 		{
 			"name": "Python: Current File",
 			"type": "python",
 			"request": "launch",
+<<<<<<< HEAD
 			"program": "scripts/${fileBasename}",
 			"cwd": "${workspaceFolder}"
+=======
+			"program": "${file}",
+			"cwd": "${workspaceFolder}",
+			"args": ["2019"]
+>>>>>>> new-2019
 		},
 		{
 			"name": "Python: Attach",

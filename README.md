@@ -51,6 +51,8 @@ awi.csv is derived from https://www.ssa.gov/oact/cola/AWI.html
 
 d97demographics.csv is derived from https://www.op97.org/teach-learn/state-report-cards
 
+characteristics.csv is from https://datacatalog.cookcountyil.gov/resource/bcnq-qi2z.csv?Town%20Code=27&$limit=20000
+
 ## Notes
 
 -   For simplicity, the "Agency" column rolls up the Library into the Village of Oak Park, and the mental health and general assistance funds into the Township, the 'Detail' column breaks those out if you want to do summaries that perserve this detail.

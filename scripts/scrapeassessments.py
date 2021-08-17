@@ -9,11 +9,12 @@ import time
 import sys
 import random
 import common
+import re
 
 taxyear = common.getTaxYear()
 
-pins = pd.read_csv("oppins.csv")
-
+pins = pd.read_csv("newpins.csv")
+pins['PIN'] = pins['PIN'].astype(str)
 # Don't start processing pins until you hit 'startpin'
 startpin = '16-08-121-047-0000'
 try:
@@ -64,6 +65,31 @@ if startpin == None:
     processpin = True
 
 results = pd.DataFrame()
+
+items = [
+    {'classification': 'Property Classification'},
+    {'landsqft': 'Square Footage (Land)'},
+    {'neighborhood': 'Neighborhood'},
+    {'taxcode': 'Taxcode'},
+    {'landassessedvalue': 'Land Assessed Value'},
+    {'buildingassessedvalue': 'Building Assessed Value'},
+    {'combinedassessedvalue': 'Total Assessed Value'},
+    {'description': 'Description'},
+    {'residencetype': 'Residence Type'},
+    {'use': 'Use'},
+    {'exteriorconstruction': 'Exterior Construction'},
+    {'fullbaths': 'Full Baths'},
+    {'halfbaths': 'Half Baths'},
+    {'basement': 'Basement'},
+    {'attic': 'Attic'},
+    {'centralair': 'Central Air'},
+    {'fireplaces': 'Number of Fireplaces'},
+    {'garage': 'Garage Size/Type'},
+    {'age': 'Age'},
+    {'buildingsqft': 'Building Square Footage'},
+    {'assessmentpass': 'Assessment Pass'}
+]
+
 
 for index, pin in pins.iterrows():
     if startpin != None and pin.PIN == startpin:
@@ -137,11 +163,20 @@ for index, pin in pins.iterrows():
             row[list(item.keys())[0]] = [span[0].get_text().strip()]
 
         except:
-            print('Error processing '+pin.PIN +
-                  ' ' + list(item.keys())[0] + ' ' + url)
+            retries = retries + 1
+            print("Retrying: "+ str(retries))
+            print( sys.exc_info()[0])
+            if (retries >= 5):
+                results.to_csv(str(taxyear)+'/assessments2.csv')
 
-    results = results.append(row)
-    results.to_csv(str(taxyear)+'/assessments.csv')
+                print("Retries failing, exiting...")
+                exit(1)
+            time.sleep(5)
 
-    if index % 10 == 0:
+
+    if index % 100 == 0:
         print('------- ' + str(index) + ' -------')
+        results.to_csv(str(taxyear)+'/assessments2.csv')
+
+results.to_csv(str(taxyear)+'/assessments2.csv')
+
