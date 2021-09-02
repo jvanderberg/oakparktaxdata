@@ -8,7 +8,7 @@ taxyear = common.getTaxYear()
 def convert(column, df):
     df[column] = df[column].astype(str)
     df[column] = df[column].str.replace("$", "").str.replace(
-        "nan", "").str.replace(",", "").str.replace("\*\*", "")
+        "nan", "").str.replace("N/A","").str.replace(",", "").str.replace("\*\*", "")
     df[column][df[column] == ''] = "0"
     df[column] = df[column].astype(float)
 

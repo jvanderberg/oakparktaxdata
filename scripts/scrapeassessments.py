@@ -13,10 +13,10 @@ import re
 
 taxyear = common.getTaxYear()
 
-pins = pd.read_csv("newpins.csv")
-pins['PIN'] = pins['PIN'].astype(str)
+pins = pd.read_csv("oppins.csv")
+
 # Don't start processing pins until you hit 'startpin'
-startpin = '16-08-121-047-0000'
+startpin = '16053260380000'
 try:
     startpin
 except NameError:
@@ -101,7 +101,6 @@ for index, pin in pins.iterrows():
 
     url = 'https://www.cookcountyassessor.com/pin/' + \
         pin.PIN.replace("-", "")
-    time.sleep(0.25)
     contents = simple_get(url)
     print(url)
 
@@ -163,20 +162,12 @@ for index, pin in pins.iterrows():
             row[list(item.keys())[0]] = [span[0].get_text().strip()]
 
         except:
-            retries = retries + 1
-            print("Retrying: "+ str(retries))
-            print( sys.exc_info()[0])
-            if (retries >= 5):
-                results.to_csv(str(taxyear)+'/assessments2.csv')
+           print('Error processing '+pin.PIN +
+                  ' ' + list(item.keys())[0] + ' ' + url)
 
-                print("Retries failing, exiting...")
-                exit(1)
-            time.sleep(5)
+    results = results.append(row)
+    results.to_csv(str(taxyear)+'/assessments.csv')
 
-
-    if index % 100 == 0:
+    if index % 10 == 0:
         print('------- ' + str(index) + ' -------')
-        results.to_csv(str(taxyear)+'/assessments2.csv')
-
-results.to_csv(str(taxyear)+'/assessments2.csv')
 
