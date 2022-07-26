@@ -31,7 +31,7 @@ p5 = plt.bar(year, village, width, color='#990099',
              bottom=park + town + d200 + d97)
 
 plt.ylabel("Tax Levy %")
-plt.xticks(np.arange(2000, taxyear, step=5))
+plt.xticks(np.arange(2000, taxyear+1, step=5))
 plt.grid(axis='y', linewidth=0.5)
 plt.legend((p1[0], p2[0], p3[0], p4[0], p5[0]), ('D200', 'D97',
                                                  'Oak Park Township', 'Park District', 'Village of Oak Park'), loc='lower left')

@@ -29,7 +29,7 @@ line1 = plt.plot(d97 * 100, color='#dc3912', linewidth=2)
 line3 = plt.plot(cpi * 100, color='#3366cc', linewidth=2)
 line4 = plt.plot(awi * 100, color='#990099', linewidth=2)
 line5 = plt.plot(d97enrollment * 100,  color='#109618', linewidth=2)
-plt.xticks(np.arange(baseyear, taxyear, step=2))
+plt.xticks(np.arange(baseyear, taxyear+1, step=2))
 plt.legend(['D97 Levy', 'Prices', 'Wages', 'Enrollment'])
 plt.grid(axis='y', linewidth=0.5)
 

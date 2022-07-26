@@ -46,6 +46,7 @@ https://www.cookcountyclerk.com/service/tax-agency-reports
 These files are available in the "data" directory.
 
 cpi.csv is derived from the CPI-U found at https://www.bls.gov/regions/midwest/data/consumerpriceindexhistorical_us_table.pdf
+https://data.bls.gov/timeseries/CUUR0000SA0?amp%253bdata_tool=XGtable&output_view=data&include_graphs=true
 
 awi.csv is derived from https://www.ssa.gov/oact/cola/AWI.html
 

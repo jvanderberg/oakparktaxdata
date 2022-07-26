@@ -33,7 +33,7 @@ plt.xticks(np.arange(baseyear, taxyear, step=5))
 plt.ylabel("Yearly Percentage Increase")
 plt.title('Yearly % Increase Oak Park Taxing Bodies')
 
-plt.xticks(np.arange(baseyear, taxyear, step=5))
+plt.xticks(np.arange(baseyear, taxyear+1, step=5))
 plt.grid(axis='y', linewidth=0.5)
 plt.ylim(top=30)
 plt.legend((p1[0], p2[0], p3[0], p4[0], p5[0]), ('D200', 'D97',
@@ -58,7 +58,7 @@ plt.xticks(np.arange(baseyear, taxyear, step=5))
 plt.ylabel("Percentage Increase")
 plt.title('Yearly % Increase Oak Park Total Levy')
 
-plt.xticks(np.arange(baseyear, taxyear, step=5))
+plt.xticks(np.arange(baseyear, taxyear+1, step=5))
 plt.grid(axis='y', linewidth=0.5)
 plt.legend((p1[0], p2[0]),('Year over Year', str(N)+' Yr. Rolling avg'), loc='lower left')
 
