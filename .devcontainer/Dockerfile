@@ -59,12 +59,13 @@ RUN wget https://openssl.org/source/openssl-1.0.2k.tar.gz \
 	&& make -i install 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=
-RUN pip install pandas
+RUN pip install pandas==1.1.5
 RUN pip install matplotlib
 RUN pip install requests
 RUN pip install bs4
 RUN pip install splinter
 RUN pip install selenium==3.11
+RUN pip install aiohttp
 ARG FIREFOX_VERSION=102.0.1esr
 RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERSION = "nightly-latest" ] || [ $FIREFOX_VERSION = "devedition-latest" ]; then echo "https://download.mozilla.org/?product=firefox-$FIREFOX_VERSION-ssl&os=linux64&lang=en-US"; else echo "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"; fi) \
 	&& apt-get update -qqy \
