@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
 #-------------------------------------------------------------------------------------------------------------
 
-FROM python:3
+FROM --platform=linux/amd64 python:3
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -64,8 +64,8 @@ RUN pip install matplotlib
 RUN pip install requests
 RUN pip install bs4
 RUN pip install splinter
-RUN pip install selenium
-ARG FIREFOX_VERSION=latest
+RUN pip install selenium==3.11
+ARG FIREFOX_VERSION=102.0.1esr
 RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERSION = "nightly-latest" ] || [ $FIREFOX_VERSION = "devedition-latest" ]; then echo "https://download.mozilla.org/?product=firefox-$FIREFOX_VERSION-ssl&os=linux64&lang=en-US"; else echo "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"; fi) \
 	&& apt-get update -qqy \
 	&& apt-get -qqy --no-install-recommends install firefox-esr \
@@ -81,8 +81,8 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
 #============
 # GeckoDriver
 #============
-ARG GECKODRIVER_VERSION=latest
-RUN GK_VERSION=$(if [ ${GECKODRIVER_VERSION:-latest} = "latest" ]; then echo "0.24.0"; else echo $GECKODRIVER_VERSION; fi) \
+ARG GECKODRIVER_VERSION=0.33.0
+RUN GK_VERSION=$(if [ ${GECKODRIVER_VERSION:-latest} = "latest" ]; then echo "0.33.0"; else echo $GECKODRIVER_VERSION; fi) \
 	&& echo "Using GeckoDriver version: "$GK_VERSION \
 	&& wget --no-verbose -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v$GK_VERSION/geckodriver-v$GK_VERSION-linux64.tar.gz \
 	&& rm -rf /opt/geckodriver \
