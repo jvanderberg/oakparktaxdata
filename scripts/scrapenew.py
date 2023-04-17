@@ -16,9 +16,11 @@ import aiohttp as aiohttp
 taxyear = common.getTaxYear()
 
 pins = pd.read_csv("oppins.csv")
+number_fields = ["Total AV","Total MV","Square Footage","Land AV","Land MV","Land MV/SF","Bldg AV","Building AV","Building MV","Land, Sq Ft","HIE AV","2022 BORVALUE Bldg AV","2022 BORVALUE HIE AV","2022 BORVALUE Land AV","2022 BORVALUE Total AV","2022 BORVALUE Total MV","2022 CCAOFINAL Bldg AV","2022 CCAOFINAL HIE AV","2022 CCAOFINAL Land AV","2022 CCAOFINAL Total AV","2022 CCAOFINAL Total MV","2022 CCAOVALUE Bldg AV","2022 CCAOVALUE HIE AV","2022 CCAOVALUE Land AV","2022 CCAOVALUE Total AV","2022 CCAOVALUE Total MV","2023 CCAOVALUE Bldg AV","2023 CCAOVALUE HIE AV","2023 CCAOVALUE Land AV","2023 CCAOVALUE Total AV","2023 CCAOVALUE Total MV"]
+
 
 # Don't start processing pins until you hit 'startpin'
-# startpin = '16-05-100-038-0000'
+startpin = '16-18-417-027-0000'
 try:
     startpin
 except NameError:
@@ -27,29 +29,10 @@ except NameError:
 
 
 async def simple_get(url):
-
     async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=100,limit_per_host=100)) as session:
         async with session.get(url) as resp:
             body = await resp.text()
             return body
-
-# def simple_get(url):
-#     """
-#     Attempts to get the content at `url` by making an HTTP GET request.
-#     If the content-type of response is some kind of HTML/XML, return the
-#     text content, otherwise return None.
-#     """
-#     try:
-#         with closing(get(url, stream=True)) as resp:
-#             if is_good_response(resp):
-#                 return resp.content
-#             else:
-#                 return None
-
-#     except RequestException as e:
-#         log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-#         return None
-
 
 def is_good_response(resp):
     """
@@ -122,7 +105,6 @@ async def process_url(url, pin):
    
     for item in items:
         span = html.select(list(item.values())[0])
-        # print(span)
         if (len(span)==0): continue
         try:
             values = extract_data(span[0], property_data)
@@ -132,10 +114,23 @@ async def process_url(url, pin):
                     ' ' + list(item.keys())[0] + ' ' + url)
     row = pd.DataFrame()
 
-    row = row.append(property_data, ignore_index=True)    
+    row = row.append(property_data, ignore_index=True)
+
+    for field in number_fields:
+        convert(field,row);
     return row
 
 processpin = False
+
+def convert(column, df):
+    try:
+        df[column] = df[column].astype(str)
+        df[column] = df[column].str.replace("$", "").str.replace(
+            "nan", "").str.replace("N/A","").str.replace(",", "").str.replace("\*\*", "")
+        df[column][df[column] == ''] = "0"
+        df[column] = df[column].astype(float)
+    except KeyError:
+        print('Error for '+column)
 
 
 async def main():
@@ -164,9 +159,29 @@ async def main():
             print('------- ' + str(index) + ' -------')
             time_difference = time.time() - start_time
             print(f'Scraping time: %.2f seconds.' % (time_difference / 8))
-            results.to_csv(str(taxyear)+'/assessmentsnew.csv')
+ 
+            out = results.copy()
+            out.columns = [col.rstrip(':') for col in out.columns]
+                
+            out.to_csv(str(taxyear)+'/assessmentsnew.csv')
             start_time = time.time()
             tasks=[]
+    if len(tasks) > 0:
+        task_results = await asyncio.gather(*tasks)
+        for task_result in task_results:
+            results = results.append(task_result, ignore_index=True)
+        print('------- ' + str(index) + ' -------')
+        time_difference = time.time() - start_time
+        print(f'Scraping time: %.2f seconds.' % (time_difference / 8))
+
+        out = results.copy()
+        out.columns = [col.rstrip(':') for col in out.columns]
+            
+        out.to_csv(str(taxyear)+'/assessmentsnew.csv')
+        start_time = time.time()
+        tasks=[]
+
+        
  
 
 loop = asyncio.get_event_loop()
