@@ -1,7 +1,7 @@
+import time
 from splinter import Browser
 import pandas as pd
-import time
-import sys
+
 import splinter as splinter
 import common
 import selenium
@@ -12,7 +12,7 @@ pins = pd.read_csv("oppins.csv")
 results = pd.DataFrame()
 
 # Don't start processing pins until you hit 'startpin'
-startpin = '16-05-326-038-0000'
+# startpin = '16-05-326-038-0000'
 try:
     startpin
     results=pd.read_csv(str(taxyear)+'/cookcountyassessments.csv')
