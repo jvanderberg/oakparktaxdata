@@ -12,10 +12,10 @@ pins = pd.read_csv("oppins.csv")
 results = pd.DataFrame()
 
 # Don't start processing pins until you hit 'startpin'
-# startpin = '16-05-326-038-0000'
+startpin = '16-07-408-026-1011'
 try:
     startpin
-    results=pd.read_csv(str(taxyear)+'/cookcountyassessments.csv')
+    results=pd.read_csv(str(taxyear)+'/cookcountyassessments2.csv')
 except NameError:
     startpin = None
 
@@ -77,11 +77,6 @@ for index, pin in pins.iterrows():
                                     baseyear-3): 'ContentPlaceHolder1_TaxBillInfo_rptTaxBill_taxBillAmount_3'},
                                 {'taxbill'+str(
                                     baseyear-4): 'ContentPlaceHolder1_TaxBillInfo_rptTaxBill_taxBillAmount_4'},
-                                {'homeownerexemption': 'ContentPlaceHolder1_TaxCalculator_lblHomeownerExemption'},
-                                {'seniorfreezeexemption': 'ContentPlaceHolder1_TaxCalculator_lblSeniorFreezeExemption'},
-                                {'seniorcitizenexemption': 'ContentPlaceHolder1_TaxCalculator_lblSeniorCitizenExemption'},
-                                {'taxbeforeexemptions': 'ContentPlaceHolder1_TaxCalculator_lblTaxBeforeExemptions'},
-                                {'taxafterexemptions': 'ContentPlaceHolder1_TaxCalculator_lblTaxAfterExemptions'},
                                 {'estimatedvalue': 'ContentPlaceHolder1_TaxYearInfo_propertyEstimatedValue'},
                                 {'assessedvalue': 'ContentPlaceHolder1_TaxYearInfo_propertyAssessedValue'},
                                 {'lotsize': 'ContentPlaceHolder1_TaxYearInfo_propertyLotSize'},
@@ -99,15 +94,15 @@ for index, pin in pins.iterrows():
                     for item in items:
                         try:
                             value = browser.find_by_id(
-                                list(item.values())[0]).first.html
+                                list(item.values())[0]).first.text.replace("*","")
                             row[list(item.keys())[0]] = [value]
 
                         except splinter.exceptions.ElementDoesNotExist:
                             row[list(item.keys())[0]] = ""
                             print('Error processing '+str(pin.PIN) + \
                                 ' ' + list(item.keys())[0] + ' ' + url + '')
-
-                    results = results.append(row)
+    
+                    results = pd.concat([results,row])
                 # print results
                 print("save")
                 results.to_csv(str(taxyear)+'/cookcountyassessments.csv', index=False)

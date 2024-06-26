@@ -16,7 +16,7 @@ taxyear = common.getTaxYear()
 pins = pd.read_csv("oppins.csv")
 
 # Don't start processing pins until you hit 'startpin'
-startpin = '16053260380000'
+# startpin = '16053260380000'
 try:
     startpin
 except NameError:
@@ -165,7 +165,7 @@ for index, pin in pins.iterrows():
            print('Error processing '+pin.PIN +
                   ' ' + list(item.keys())[0] + ' ' + url)
 
-    results = results.append(row)
+    results = pd.concat([results,row])
     results.to_csv(str(taxyear)+'/assessments.csv')
 
     if index % 10 == 0:

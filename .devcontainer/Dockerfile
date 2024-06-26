@@ -59,11 +59,11 @@ RUN wget https://openssl.org/source/openssl-1.0.2k.tar.gz \
 	&& make -i install 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=
-RUN pip install pandas==1.1.5
+RUN pip install pandas
 RUN pip install matplotlib
 RUN pip install requests
 RUN pip install bs4
-RUN pip install splinter
+RUN pip install splinter==0.17.0
 RUN pip install selenium==3.11
 RUN pip install aiohttp
 ARG FIREFOX_VERSION=102.0.1esr

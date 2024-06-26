@@ -114,7 +114,7 @@ async def process_url(url, pin):
                     ' ' + list(item.keys())[0] + ' ' + url)
     row = pd.DataFrame()
 
-    row = row.append(property_data, ignore_index=True)
+    row = pd.concat([row,pd.DataFrame([property_data])], ignore_index=True)
 
     for field in number_fields:
         convert(field,row);
@@ -155,7 +155,7 @@ async def main():
         if index % 8 == 0 and index != 0:
             task_results = await asyncio.gather(*tasks)
             for task_result in task_results:
-                results = results.append(task_result, ignore_index=True)
+                results = pd.concat([results,task_result], ignore_index=True)
             print('------- ' + str(index) + ' -------')
             time_difference = time.time() - start_time
             print(f'Scraping time: %.2f seconds.' % (time_difference / 8))
