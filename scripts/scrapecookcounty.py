@@ -12,10 +12,10 @@ pins = pd.read_csv("oppins.csv")
 results = pd.DataFrame()
 
 # Don't start processing pins until you hit 'startpin'
-startpin = '16-07-408-026-1011'
+#startpin = '16-07-408-026-1011'
 try:
     startpin
-    results=pd.read_csv(str(taxyear)+'/cookcountyassessments2.csv')
+    results=pd.read_csv(str(taxyear)+'/cookcountyassessments.csv')
 except NameError:
     startpin = None
 

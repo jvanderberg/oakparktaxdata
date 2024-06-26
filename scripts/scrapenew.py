@@ -20,7 +20,7 @@ number_fields = ["Total AV","Total MV","Square Footage","Land AV","Land MV","Lan
 
 
 # Don't start processing pins until you hit 'startpin'
-startpin = '16-18-417-027-0000'
+startpin = '16-07-315-009-0000'
 try:
     startpin
 except NameError:
@@ -126,8 +126,8 @@ def convert(column, df):
     try:
         df[column] = df[column].astype(str)
         df[column] = df[column].str.replace("$", "").str.replace(
-            "nan", "").str.replace("N/A","").str.replace(",", "").str.replace("\*\*", "")
-        df[column][df[column] == ''] = "0"
+            "nan", "").str.replace("N/A","").str.replace(",", "").str.replace("\\*\\*", "")
+        df.loc[[df[column] == '']] = "0"
         df[column] = df[column].astype(float)
     except KeyError:
         print('Error for '+column)
@@ -152,7 +152,7 @@ async def main():
             pin.PIN.replace("-", "") + "&gsp=PROFILEALL_CC&taxyear=2023&jur=016&ownseq=0&card=1&roll=RP&State=1&item=1&items=-1&all=all&ranks=Datalet"
         task = asyncio.create_task(process_url(url, pin.PIN))
         tasks.append(task)
-        if index % 8 == 0 and index != 0:
+        if index % 20 == 0 and index != 0:
             task_results = await asyncio.gather(*tasks)
             for task_result in task_results:
                 results = pd.concat([results,task_result], ignore_index=True)
@@ -169,7 +169,7 @@ async def main():
     if len(tasks) > 0:
         task_results = await asyncio.gather(*tasks)
         for task_result in task_results:
-            results = results.append(task_result, ignore_index=True)
+            pd.concat([results,task_result], ignore_index=True)
         print('------- ' + str(index) + ' -------')
         time_difference = time.time() - start_time
         print(f'Scraping time: %.2f seconds.' % (time_difference / 8))
