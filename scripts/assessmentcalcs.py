@@ -9,7 +9,7 @@ pctbucketsize = 5
 fiveyearsago = taxyear - 4
 assessments = pd.read_csv(
     str(taxyear)+"/combinedassessments.csv",  thousands=',')
-assessments = assessments[assessments.use == 'Single Family']
+assessments = assessments[assessments.Use == 'SINGLE FAMILY']
 assessments['taxbill'] = assessments['taxbill'+str(taxyear)]
 
 assessments['range'] = (assessments.taxbill / bucketsize)
