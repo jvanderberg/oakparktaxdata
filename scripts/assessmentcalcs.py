@@ -57,7 +57,7 @@ plt.savefig(str(taxyear)+'/charts/taxbillcounts.png')
 pivot.to_csv(str(taxyear)+'/assessmentpivot.csv')
 
 pivot2 = pivot2.transpose()
-print(pivot2)
+
 plt.close()
 plt.figure(figsize=(10, 8), dpi=200)
 pivot2['fiveyearrangestr'] = (pivot2.index).map('{:.0f}%'.format)

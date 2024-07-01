@@ -13,7 +13,7 @@ def convert(column, df,newname=None):
         df[newname] = df[column].str.replace("$", "").str.replace(
             "nan", "").str.replace("N/A","").str.replace(",", "").str.replace("\\*\\*", "")
         df.loc[df[column] == '', column] = "0"
-        df[newname] = df[column].astype(float)
+        df[newname] = df[newname].astype(float)
     else:
         df[newname] = df[column]
 
@@ -45,5 +45,11 @@ combined['lastyearbillchangepct'] = 100 * combined.lastyearbillchange / \
 combined['fiveyearbillchangepct'] = 100 * combined.fiveyearbillchange / \
     combined['taxbill'+str(taxyear-4)]
 
-
+lastyearmvfield = str(taxyear - 1) + ' BORVALUE Total MV'
+thisyearmvfield = str(taxyear) + ' BORVALUE Total MV'
+print(combined[lastyearmvfield])
+convert(lastyearmvfield, combined, 'lastyeartotalmv')
+convert(thisyearmvfield, combined, 'thisyeartotalmv')
+combined['totalmvchange'] = combined['thisyeartotalmv'] - combined['lastyeartotalmv']
+combined['totalmvchangepct'] = 100 * combined['totalmvchange'] / combined['lastyeartotalmv'] 
 combined.to_csv(str(taxyear)+'/combinedassessments.csv')

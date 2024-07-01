@@ -28,7 +28,17 @@ print(sf['fiveyearbillchangepct'].describe(
 
 print('Median Bill increase',sf['lastyearbillchangepct'].median())
 print('Average Bill increase',sf['lastyearbillchangepct'].mean())
+print('Median MV increase',sf['totalmvchange'].median())
+print('Median MV increase pct',sf['totalmvchangepct'].median())
+print('Number of people with tax cuts < 0%', sf[sf['lastyearbillchangepct']<=0].count())
+print('Number of people with tax cuts < 5%', sf[sf['lastyearbillchangepct']<=5].count())
+print('Number of people with tax increases > 5%', sf[sf['lastyearbillchangepct']>5].count())
 
+print('Median tax increase pct for people with tax increases > 5%', sf[sf['lastyearbillchangepct']>5]['lastyearbillchangepct'].median())
+
+
+fit = np.polyfit(sf['totalmvchangepct'], y=sf['lastyearbillchangepct'], deg=1)
+print('fit', fit)
 import matplotlib.pyplot as plt
 plt.close()
 plt.figure(figsize=(6, 5), dpi=200)
